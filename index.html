@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rick and Morty Characters</title>
+<style>
+#characters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsivo */
+  grid-gap: 20px;
+}
+
+.character {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.character img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+  <h1>Rick and Morty Characters</h1>
+  <div id="characters"></div>
+  <script>
+    fetch('https://rickandmortyapi.com/api/character')
+      .then(response => response.json())
+      .then(data => {
+        const charactersContainer = document.getElementById('characters');
+        data.results.forEach(character => {
+          const characterDiv = document.createElement('div');
+          characterDiv.classList.add('character');
+          characterDiv.innerHTML = `
+            <h3>${character.name}</h3>
+            <img src="${character.image}" alt="${character.name}">
+          `;
+          charactersContainer.appendChild(characterDiv);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        const charactersContainer = document.getElementById('characters');
+        charactersContainer.innerHTML = '<p>Erro ao carregar os personagens.</p>';
+      });
+  </script>
+</body>
+</html>
